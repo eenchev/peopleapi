@@ -6,52 +6,20 @@ import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 
 @Entity
+@Data
 public class Address {
 
     @Id
     @GeneratedValue
+    @Setter(value = AccessLevel.NONE)
     private Long id;
 
     private String street;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getStreetNo() {
-        return streetNo;
-    }
-
-    public void setStreetNo(Integer streetNo) {
-        this.streetNo = streetNo;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDate getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     private Integer streetNo;
 
     @CreationTimestamp
