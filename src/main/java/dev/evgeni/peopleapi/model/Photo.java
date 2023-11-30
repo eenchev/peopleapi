@@ -2,11 +2,11 @@ package dev.evgeni.peopleapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,9 @@ public class Photo {
 
     private String description;
 
-    @Lob
+    // @Lob
+    @Column(length = 16000000)
+    @JsonIgnore
     private byte[] content;
 
     private String contentType;

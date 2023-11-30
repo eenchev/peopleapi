@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import dev.evgeni.peopleapi.error.MissingFileUploadException;
 import dev.evgeni.peopleapi.model.Photo;
 import dev.evgeni.peopleapi.repository.PhotoRepository;
 
@@ -50,8 +51,13 @@ public class PhotoController {
 
     // upload photo
     @PostMapping(value = "")
-    public Photo uploadPhoto(@RequestParam(name = "photo") MultipartFile photoFile)
+    public Photo uploadPhoto(
+            @RequestParam(name = "photo", required = false) MultipartFile photoFile)
             throws IOException {
+
+        if (photoFile == null) {
+            throw new MissingFileUploadException("photo", Photo.class.getName());
+        }
         Photo photo = Photo.builder().description("").content(photoFile.getBytes())
                 .contentType(photoFile.getContentType()).build();
 
