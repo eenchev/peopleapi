@@ -10,3 +10,4 @@ public class PersonBookPrimaryKey implements Serializable {
     private Long bookId;
 
 }
+

@@ -1,8 +1,8 @@
 package dev.evgeni.peopleapi.web.dto;
 
 import java.util.List;
-import dev.evgeni.peopleapi.constants.Gender;
 import dev.evgeni.peopleapi.model.Address;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +14,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdatePersonRequest {
 
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
-    private Gender gender;
+    private String gender;
 
     private List<Long> filmIds;
 

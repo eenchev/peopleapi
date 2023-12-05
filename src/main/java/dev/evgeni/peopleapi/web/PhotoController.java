@@ -1,9 +1,9 @@
 package dev.evgeni.peopleapi.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import dev.evgeni.peopleapi.error.MissingFileUploadException;
 import dev.evgeni.peopleapi.model.Photo;
+import dev.evgeni.peopleapi.repository.PhotoPagingRepository;
 import dev.evgeni.peopleapi.repository.PhotoRepository;
+import dev.evgeni.peopleapi.web.dto.PersonApiPage;
 
 @RestController
 @RequestMapping(value = "/photo")
@@ -23,6 +25,9 @@ public class PhotoController {
 
     @Autowired
     private PhotoRepository photoRepository;
+
+    @Autowired
+    private PhotoPagingRepository photoPagingRepository;
 
     // get photo by id
 
@@ -36,16 +41,11 @@ public class PhotoController {
 
     // get list of all photos (only id and description)
     @GetMapping(value = "")
-    public List<Long> getAllPhotos() {
-        List<Photo> allPhotos = (List<Photo>) photoRepository.findAll();
+    public PersonApiPage<Photo> getAllPhotos(
+            @RequestParam(required = false, defaultValue = "0") Integer page) {
+        Page<Photo> allPhotos = photoPagingRepository.findAll(PageRequest.of(page, 10));
 
-        List<Long> allPhotoIds = new ArrayList<>();
-
-        for (Photo photo : allPhotos) {
-            allPhotoIds.add(photo.getId());
-        }
-
-        return allPhotoIds;
+        return new PersonApiPage<>(allPhotos);
     }
 
 

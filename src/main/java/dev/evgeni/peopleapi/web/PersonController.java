@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,15 +13,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import dev.evgeni.peopleapi.error.NotFoundObjectException;
 import dev.evgeni.peopleapi.model.Film;
 import dev.evgeni.peopleapi.model.Person;
 import dev.evgeni.peopleapi.model.Photo;
 import dev.evgeni.peopleapi.repository.FilmRepository;
+import dev.evgeni.peopleapi.repository.PersonPagingRepository;
 import dev.evgeni.peopleapi.repository.PersonRepository;
 import dev.evgeni.peopleapi.repository.PhotoRepository;
+import dev.evgeni.peopleapi.service.ObjectValidator;
 import dev.evgeni.peopleapi.web.dto.CreatePersonRequest;
+import dev.evgeni.peopleapi.web.dto.PersonApiPage;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonPhotosRequest;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonPhotosResponse;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonRequest;
@@ -28,8 +33,16 @@ import dev.evgeni.peopleapi.web.dto.UpdatePersonRequest;
 @RestController
 public class PersonController {
 
+    private static final Integer PAGE_SIZE = 10;
+
+    @Autowired
+    private ObjectValidator validator;
+
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private PersonPagingRepository personPagingRepository;
 
     @Autowired
     private PhotoRepository photoRepository;
@@ -38,8 +51,10 @@ public class PersonController {
     private FilmRepository filmRepository;
 
     @GetMapping(value = "/person")
-    private List<Person> getAllPeople() {
-        return (List<Person>) personRepository.findAll();
+    private PersonApiPage<Person> getAllPeople(
+            @RequestParam(required = false, defaultValue = "0") Integer page) {
+        return new PersonApiPage<>(personPagingRepository.findAll(PageRequest.of(page, PAGE_SIZE)));
+        // personPagingRepository.findAll(Sort.);
     }
 
     @GetMapping(value = "/person/{id}")
@@ -52,6 +67,7 @@ public class PersonController {
     @PostMapping(value = "/person")
     private Person createPerson(@RequestBody CreatePersonRequest personRequest) {
 
+        validator.validate(personRequest);
 
         List<Film> films = new ArrayList<>();
         if (personRequest.getFilmIds() != null) {

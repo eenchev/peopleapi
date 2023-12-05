@@ -34,6 +34,8 @@ public class Person {
     private String firstName;
     private String lastName;
 
+    private String egn;
+
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = true)
     private Address address;
