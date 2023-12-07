@@ -2,6 +2,7 @@ package dev.evgeni.peopleapi.web.dto;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Builder;
@@ -23,9 +24,10 @@ public class PersonApiPage<T> {
                 .totalElements(springPage.getTotalElements()).build();
     }
 
-    public PersonApiPage(List<T> pageWithoutMeta) {
+    public PersonApiPage(List<T> pageWithoutMeta, PageRequest pageRequest) {
         this.content = pageWithoutMeta;
-        this.meta = null;
+        this.meta = PaginationMetadata.builder().currPage(pageRequest.getPageNumber())
+                .pageSize(pageRequest.getPageSize()).build();
     }
 
     @Getter

@@ -1,7 +1,6 @@
 package dev.evgeni.peopleapi.web.dto;
 
 import java.util.List;
-import dev.evgeni.peopleapi.model.Address;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +21,6 @@ public class UpdatePersonRequest {
 
     private List<Long> filmIds;
 
-    private Address address;
+    private AddressDto address;
 
 }

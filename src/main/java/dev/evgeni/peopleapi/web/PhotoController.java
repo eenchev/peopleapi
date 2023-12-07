@@ -43,6 +43,7 @@ public class PhotoController {
     @GetMapping(value = "")
     public PersonApiPage<Photo> getAllPhotos(
             @RequestParam(required = false, defaultValue = "0") Integer page) {
+
         Page<Photo> allPhotos = photoPagingRepository.findAll(PageRequest.of(page, 10));
 
         return new PersonApiPage<>(allPhotos);

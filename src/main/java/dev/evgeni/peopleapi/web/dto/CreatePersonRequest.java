@@ -1,7 +1,6 @@
 package dev.evgeni.peopleapi.web.dto;
 
 import java.util.List;
-import dev.evgeni.peopleapi.model.Address;
 import dev.evgeni.peopleapi.validation.Egn;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -20,5 +19,6 @@ public class CreatePersonRequest {
 
     private List<Long> filmIds;
 
-    private Address address;
+    private String street;
+    private Integer streetNo;
 }

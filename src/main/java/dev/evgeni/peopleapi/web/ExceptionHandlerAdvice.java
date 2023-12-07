@@ -49,6 +49,13 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<PeopleApiHttpException> illegalArgument(IllegalArgumentException e) {
+        PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(UUID.randomUUID())
+                .message(e.getMessage()).build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
+    }
 
     @Data
     @Builder
