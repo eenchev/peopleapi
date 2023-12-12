@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +73,7 @@ public class PersonController {
     }
 
     @PostMapping(value = "/person")
-    private Person createPerson(@RequestBody CreatePersonRequest personRequest) {
+    private ResponseEntity<Person> createPerson(@RequestBody CreatePersonRequest personRequest) {
 
         validator.validate(personRequest);
 
@@ -83,7 +84,7 @@ public class PersonController {
             person.setFilms(films);
         }
 
-        return personRepository.save(person);
+        return ResponseEntity.status(201).body(personRepository.save(person));
     }
 
     @PatchMapping(value = "/person/{id}")
