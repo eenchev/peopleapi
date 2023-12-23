@@ -10,6 +10,7 @@ import org.springframework.boot.test.json.JsonContent;
 import dev.evgeni.peopleapi.web.dto.CreatePersonRequest;
 
 @JsonTest
+// @Profile("unit")
 public class PersonSerializationTest {
 
     @Autowired

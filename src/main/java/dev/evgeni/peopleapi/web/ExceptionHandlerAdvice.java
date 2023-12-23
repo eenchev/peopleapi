@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import dev.evgeni.peopleapi.error.AuthenticationFailedException;
 import dev.evgeni.peopleapi.error.InvalidObjectException;
 import dev.evgeni.peopleapi.error.MissingFileUploadException;
 import dev.evgeni.peopleapi.error.NotFoundObjectException;
@@ -46,6 +47,14 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<PeopleApiHttpException> invalidObject(InvalidObjectException e) {
         PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(e.getId())
                 .message(e.getMessage()).errors(e.getConstraintViolations()).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
+    }
+
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<PeopleApiHttpException> authenticationFailed(
+            AuthenticationFailedException e) {
+        PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(e.getId())
+                .message(e.getMessage() + ". Cause: " + e.getConcreteError()).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
     }
 

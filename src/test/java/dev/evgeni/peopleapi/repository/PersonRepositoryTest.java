@@ -10,6 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import dev.evgeni.peopleapi.model.Person;
 
 @DataJpaTest
+// @Profile("unit")
 public class PersonRepositoryTest {
 
     private static final Long PERSON_ID = 15L;

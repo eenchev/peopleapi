@@ -3,7 +3,6 @@ package dev.evgeni.peopleapi.web;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +30,8 @@ import dev.evgeni.peopleapi.web.dto.PersonApiPage;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonPhotosRequest;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonPhotosResponse;
 import dev.evgeni.peopleapi.web.dto.UpdatePersonRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Min;
 
 @RestController
@@ -38,26 +39,27 @@ public class PersonController {
 
     private static final Integer PAGE_SIZE = 10;
 
-    @Autowired
     private ObjectValidator validator;
-
-    @Autowired
     public PersonMapper personMapper;
-
-    @Autowired
     private PersonRepository personRepository;
-
-    @Autowired
     private PersonPagingRepository personPagingRepository;
-
-    @Autowired
     private PhotoRepository photoRepository;
-
-    @Autowired
     private FilmRepository filmRepository;
+
+    public PersonController(ObjectValidator validator, PersonMapper personMapper,
+            PersonRepository personRepository, PersonPagingRepository personPagingRepository,
+            PhotoRepository photoRepository, FilmRepository filmRepository) {
+        this.validator = validator;
+        this.personMapper = personMapper;
+        this.personRepository = personRepository;
+        this.personPagingRepository = personPagingRepository;
+        this.photoRepository = photoRepository;
+        this.filmRepository = filmRepository;
+    }
 
     @GetMapping(value = "/person")
     @Validated
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     private PersonApiPage<Person> getAllPeople(
             @RequestParam(required = false, defaultValue = "0") @Min(0) Integer page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
@@ -66,6 +68,7 @@ public class PersonController {
     }
 
     @GetMapping(value = "/person/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     private Person getPersonById(@PathVariable Long id) {
         return personRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundObjectException(Person.class.getName(), String.valueOf(id));
@@ -73,6 +76,7 @@ public class PersonController {
     }
 
     @PostMapping(value = "/person")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     private ResponseEntity<Person> createPerson(@RequestBody CreatePersonRequest personRequest) {
 
         validator.validate(personRequest);
@@ -88,6 +92,7 @@ public class PersonController {
     }
 
     @PatchMapping(value = "/person/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     private Person updatePerson(@PathVariable Long id,
             @RequestBody UpdatePersonRequest personRequest) {
 
@@ -104,6 +109,7 @@ public class PersonController {
     }
 
     @PutMapping(value = "/person/{id}/photos")
+    @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     private UpdatePersonPhotosResponse updatePhotos(@PathVariable Long id,
             @RequestBody UpdatePersonPhotosRequest personPhotos) {
 
