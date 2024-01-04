@@ -25,6 +25,7 @@ public class SecurityChainConfig {
             auth.requestMatchers(HttpMethod.GET, "/person").permitAll();
             auth.requestMatchers(HttpMethod.POST, "/person").hasRole("ADMIN");
             auth.requestMatchers(HttpMethod.POST, "/token").permitAll();
+            auth.requestMatchers(HttpMethod.GET, "/senddevstatistics").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/swagger-ui.html", "/swagger-ui/**", "/v3/**")
                     .permitAll();
         }).csrf(AbstractHttpConfigurer::disable)
