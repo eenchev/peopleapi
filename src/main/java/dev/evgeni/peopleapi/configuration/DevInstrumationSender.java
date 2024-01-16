@@ -11,7 +11,6 @@ public class DevInstrumationSender {
     @Autowired
     private DevInstrumentationSystemProperties config;
 
-
     public String sendStatistic() {
         return "Sending statistics with username" + config.getUsername();
     }
