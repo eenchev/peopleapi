@@ -1,0 +1,30 @@
+steps:
+  - name: 'maven:3.9-amazoncorretto-17'
+    entrypoint: mvn
+    args:
+      - package
+      - '-Dmaven.test.skip=true'
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - personapi
+      - '--image'
+      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+      - '--region'
+      - europe-west3
+images:
+  - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+options:
+  logging: CLOUD_LOGGING_ONLY
