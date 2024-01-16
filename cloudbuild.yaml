@@ -2,7 +2,8 @@ steps:
   - name: 'maven:3.9.6-amazoncorretto-21-debian'
     entrypoint: mvn
     args:
-      - package --batch-mode
+      - package
+      - '--batch-mode'
       - '-Dmaven.test.skip=true'
   - name: gcr.io/cloud-builders/docker
     args:
@@ -14,7 +15,6 @@ steps:
     args:
       - push
       - 'europe-west1-docker.pkg.dev/progress-january2024/evgeni/personapi:$COMMIT_SHA'
-
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
