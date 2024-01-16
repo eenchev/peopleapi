@@ -1,5 +1,5 @@
 steps:
-  - name: 'openjdk:21-ea-28-jdk-bullseye'
+  - name: 'maven:3.9.6-amazoncorretto-21-debian'
     entrypoint: mvn
     args:
       - package
