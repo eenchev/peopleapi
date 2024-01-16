@@ -1,5 +1,5 @@
 steps:
-  - name: 'maven:3.9-amazoncorretto-17'
+  - name: 'openjdk:21-ea-28-jdk-bullseye'
     entrypoint: mvn
     args:
       - package
@@ -8,12 +8,12 @@ steps:
     args:
       - build
       - '-t'
-      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+      - 'europe-west1-docker.pkg.dev/progress-january2024/evgeni/personapi:$COMMIT_SHA'
       - .
   - name: gcr.io/cloud-builders/docker
     args:
       - push
-      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+      - 'europe-west1-docker.pkg.dev/progress-january2024/evgeni/personapi:$COMMIT_SHA'
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
@@ -21,10 +21,10 @@ steps:
       - deploy
       - personapi
       - '--image'
-      - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+      - 'europe-west1-docker.pkg.dev/progress-january2024/evgeni/personapi:$COMMIT_SHA'
       - '--region'
       - europe-west3
 images:
-  - 'gcr.io/progress-january2024/personapi:$COMMIT_SHA'
+  - 'europe-west1-docker.pkg.dev/progress-january2024/evgeni/personapi:$COMMIT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
