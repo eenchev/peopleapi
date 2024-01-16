@@ -21,6 +21,7 @@ public class SecurityChainConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> {
+            auth.requestMatchers(HttpMethod.GET, "/dummy").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/photo").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/person").permitAll();
             auth.requestMatchers(HttpMethod.POST, "/person").hasRole("ADMIN");
