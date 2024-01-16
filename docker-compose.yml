@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: 'personapi:1.0.3'
+    image: 'personapi:1.0.4'
     build:
       context: .
     container_name: app
